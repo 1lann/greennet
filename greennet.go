@@ -188,7 +188,7 @@ func transmit(c *gin.Context) {
 			cu.mutex.Lock()
 			for _, openChannel := range cu.open {
 				if openChannel == msg.Channel {
-					msg.Distance = getDist(u.position, msg.origin.position)
+					msg.Distance = getDist(cu.position, msg.origin.position)
 					cu.queue = append(cu.queue, msg)
 				}
 			}

@@ -194,6 +194,8 @@ reconnect = function()
 
 	userID = registration.user
 	http.request(endpoint .. "/listen", postEncode({["user"] = userID}))
+	http.request(endpoint .. "/open",
+		postEncode({["user"] = userID, ["data"] = textutils.serializeJSON(openChannels)}))
 end
 
 local daemon = function()

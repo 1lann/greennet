@@ -4,7 +4,6 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 	"encoding/json"
-	"fmt"
 	"log"
 	"math"
 	mrand "math/rand"
@@ -167,8 +166,6 @@ func transmit(c *gin.Context) {
 	}
 
 	u.mutex.Unlock()
-
-	fmt.Println(c.PostForm("data"))
 
 	var messages []message
 	err := json.Unmarshal([]byte(c.PostForm("data")), &messages)

@@ -173,7 +173,9 @@ local postEncode = function(val)
 	return str:sub(1, -1)
 end
 
-local reconnect = function()
+local reconnect
+
+reconnect = function()
 	local resp = http.get(endpoint .. "/register")
 	if not resp then
 		os.queueEvent("greennet_failure", "connection")

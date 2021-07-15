@@ -22,7 +22,7 @@ type position struct {
 	z int
 }
 
-type message struct {
+type Message struct {
 	origin       user
 	Channel      uint16  `ccserialize:"channel" json:"channel"`
 	ReplyChannel uint16  `ccserialize:"reply_channel" json:"reply_channel"`
@@ -31,11 +31,11 @@ type message struct {
 }
 
 type user struct {
-	queue          []message
+	queue          []Message
 	position       position
 	open           []uint16
 	lastConnection time.Time
-	receive        chan []message
+	receive        chan []Message
 	mutex          *sync.Mutex
 	listenMutex    *sync.Mutex
 }
@@ -63,7 +63,7 @@ func newUser() string {
 		},
 		open:           nil,
 		lastConnection: time.Now(),
-		receive:        make(chan []message),
+		receive:        make(chan []Message),
 		mutex:          new(sync.Mutex),
 		listenMutex:    new(sync.Mutex),
 	}
@@ -154,7 +154,7 @@ func listen(c *gin.Context) {
 		c.String(http.StatusOK, ccserialize.Serialize(messages))
 		return
 	case <-time.After(time.Second * 20):
-		c.String(http.StatusOK, ccserialize.Serialize([]message{}))
+		c.String(http.StatusOK, ccserialize.Serialize([]Message{}))
 		return
 	}
 }
@@ -167,7 +167,7 @@ func transmit(c *gin.Context) {
 
 	u.mutex.Unlock()
 
-	var messages []message
+	var messages []Message
 	err := json.Unmarshal([]byte(c.PostForm("data")), &messages)
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotAcceptable)
